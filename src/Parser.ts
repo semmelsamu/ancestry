@@ -58,7 +58,7 @@ export class Parser {
 	 */
 	static extractParents(markdown: string) {
 		const regex = new RegExp(
-			`${Genmap.instance.settings.parentLabel}: (.*)`,
+			`${Genmap.instance.settings.parentLabel}:: (.*)`,
 			"g"
 		);
 
