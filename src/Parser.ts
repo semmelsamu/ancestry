@@ -4,10 +4,16 @@ import Genmap from "./main";
  * Extracts parent information from markdown files.
  */
 export class Parser {
+	private plugin: Genmap;
+
+	constructor(plugin: Genmap) {
+		this.plugin = plugin;
+	}
+
 	/**
 	 * Reads every file in the Vault and attempts to calculate the parents.
 	 */
-	static async all() {
+	public async all() {
 		const data = await Promise.all(
 			app.vault.getMarkdownFiles().map(async (file: any) => {
 				let content = await app.vault.cachedRead(file);
@@ -32,12 +38,12 @@ export class Parser {
 			);
 			if (originalData) {
 				person.parents = originalData.parents
-					.map((parentName) => {
+					.map((parentName: any) => {
 						return (
 							persons.find((x) => x.name == parentName) || null
 						);
 					})
-					.filter((parent) => parent !== null); // Remove any null entries
+					.filter((parent: any) => parent !== null); // Remove any null entries
 			}
 		});
 
@@ -56,9 +62,9 @@ export class Parser {
 	 * @param markdown
 	 * @returns An array of the parents if found.
 	 */
-	static extractParents(markdown: string) {
+	private extractParents(markdown: string) {
 		const regex = new RegExp(
-			`${Genmap.instance.settings.parentLabel}:: (.*)`,
+			`${this.plugin.settings.parentLabel}:: (.*)`,
 			"g"
 		);
 

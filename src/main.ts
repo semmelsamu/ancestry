@@ -1,17 +1,25 @@
-import { Notice, Plugin, WorkspaceLeaf, WorkspaceTabs } from "obsidian";
-import { Indexer } from "src/Indexer";
-import { Renderer } from "src/Renderer";
-import { FAMILY_TREE_VIEW, FamilyTreeView } from "./FamilyTreeView";
-import { Settings, DEFAULT_SETTINGS } from "src/Settings";
-import { SettingsTab } from "./SettingsTab";
+import { Plugin, MarkdownView } from "obsidian";
+import { Renderer } from "@/Renderer";
+import { Settings, DEFAULT_SETTINGS, SettingsTab } from "@/Settings";
+import { Parser } from "./Parser";
 
 export default class Genmap extends Plugin {
 	/**
-	 * Singleton
+	 * Our internal map of the family tree.
 	 */
-	public static instance: Genmap;
+	private index: any = [];
 
+	/**
+	 * The settings of the plugin. What a surprise.
+	 */
 	settings: Settings;
+
+	/**
+	 * The parser for the plugin.
+	 */
+	private parser: Parser;
+
+	private renderer: Renderer;
 
 	/**
 	 * Main entry point for the plugin.
@@ -20,37 +28,42 @@ export default class Genmap extends Plugin {
 		// Hello world
 		console.log(`Loading ${this.manifest.name} v${this.manifest.version}`);
 
-		// Initialize the singleton
-		Genmap.instance = this;
-
 		// Load settings
 		await this.loadSettings();
 
 		// Load settings UI
 		this.addSettingTab(new SettingsTab(this.app, this));
 
+		this.parser = new Parser(this);
+		this.renderer = new Renderer(this);
+
 		// Event listeners for index updating
-		this.app.workspace.onLayoutReady(async () => {
-			await Indexer.indexVault();
+		this.app.workspace.onLayoutReady(() => {
+			this.indexVault();
 		});
 		this.registerEvent(
 			this.app.vault.on("modify", () => {
-				Indexer.indexVault();
+				this.indexVault();
 			})
 		);
 		this.registerEvent(
 			this.app.vault.on("delete", () => {
-				Indexer.indexVault();
+				this.indexVault();
 			})
 		);
 		this.registerEvent(
 			this.app.vault.on("rename", () => {
-				Indexer.indexVault();
+				this.indexVault();
 			})
 		);
 
 		// Register the family tree renderer
-		this.registerMarkdownCodeBlockProcessor("ancestry", Renderer.render);
+		this.registerMarkdownCodeBlockProcessor(
+			"ancestry",
+			(source, el, ctx) => {
+				this.renderer.render(source, el, ctx);
+			}
+		);
 
 		/*
 		this.registerView(FAMILY_TREE_VIEW, (leaf) => new FamilyTreeView(leaf));
@@ -83,6 +96,22 @@ export default class Genmap extends Plugin {
 	 */
 	async saveSettings() {
 		await this.saveData(this.settings);
+	}
+
+	public async indexVault() {
+		this.index = await this.parser.all();
+
+		console.log("Index updated");
+		console.log(this.index);
+
+		// Rerender
+		app.workspace
+			.getActiveViewOfType(MarkdownView)
+			?.previewMode.rerender(true);
+	}
+
+	public async getPerson(name: string) {
+		return this.index.find((person: any) => person.name == name);
 	}
 
 	/*
