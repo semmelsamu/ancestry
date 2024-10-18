@@ -1,5 +1,5 @@
 import { Parser } from "./Parser";
-import { MarkdownView } from "obsidian";
+import { MarkdownView, Notice } from "obsidian";
 
 /**
  * Gathers vault parsing and relation calculating.
@@ -12,6 +12,7 @@ export class Indexer {
 
 		this.index = index;
 
+		// Rerender
 		app.workspace
 			.getActiveViewOfType(MarkdownView)
 			?.previewMode.rerender(true);

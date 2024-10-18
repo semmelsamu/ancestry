@@ -1,3 +1,5 @@
+import Genmap from "./main";
+
 /**
  * Extracts parent information from markdown files.
  */
@@ -55,7 +57,10 @@ export class Parser {
 	 * @returns An array of the parents if found.
 	 */
 	static extractParents(markdown: string) {
-		const regex = /Eltern: (.*)/g;
+		const regex = new RegExp(
+			`${Genmap.instance.settings.parentLabel}: (.*)`,
+			"g"
+		);
 
 		let regexResult = markdown.match(regex);
 

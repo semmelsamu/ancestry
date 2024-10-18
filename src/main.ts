@@ -2,41 +2,54 @@ import { Notice, Plugin, WorkspaceLeaf, WorkspaceTabs } from "obsidian";
 import { Indexer } from "src/Indexer";
 import { Renderer } from "src/Renderer";
 import { FAMILY_TREE_VIEW, FamilyTreeView } from "./FamilyTreeView";
+import { Settings, DEFAULT_SETTINGS } from "src/Settings";
+import { SettingsTab } from "./SettingsTab";
 
-export default class Ancestry extends Plugin {
-	public static instance: Ancestry;
+export default class Genmap extends Plugin {
+	/**
+	 * Singleton
+	 */
+	public static instance: Genmap;
 
+	settings: Settings;
+
+	/**
+	 * Main entry point for the plugin.
+	 */
 	async onload() {
+		// Hello world
 		console.log(`Loading ${this.manifest.name} v${this.manifest.version}`);
 
-		Ancestry.instance = this;
+		// Initialize the singleton
+		Genmap.instance = this;
 
-		await this.saveData(null);
+		// Load settings
+		await this.loadSettings();
 
-		this.app.workspace.onLayoutReady(() => {
-			new Notice("Indexing vault...");
-			Indexer.indexVault();
-			new Notice("Done");
+		// Load settings UI
+		this.addSettingTab(new SettingsTab(this.app, this));
+
+		// Event listeners for index updating
+		this.app.workspace.onLayoutReady(async () => {
+			await Indexer.indexVault();
 		});
-
 		this.registerEvent(
 			this.app.vault.on("modify", () => {
 				Indexer.indexVault();
 			})
 		);
-
 		this.registerEvent(
 			this.app.vault.on("delete", () => {
 				Indexer.indexVault();
 			})
 		);
-
 		this.registerEvent(
 			this.app.vault.on("rename", () => {
 				Indexer.indexVault();
 			})
 		);
 
+		// Register the family tree renderer
 		this.registerMarkdownCodeBlockProcessor("ancestry", Renderer.render);
 
 		/*
@@ -51,6 +64,25 @@ export default class Ancestry extends Plugin {
 			}
 		);
         */
+	}
+
+	/**
+	 * Load settings from the disk. Use the default settings if no settings are
+	 * found.
+	 */
+	async loadSettings() {
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
+	}
+
+	/**
+	 * Save settings to the disk
+	 */
+	async saveSettings() {
+		await this.saveData(this.settings);
 	}
 
 	/*
