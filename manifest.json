@@ -1,11 +1,10 @@
 {
-	"id": "obsidian-ancestry",
-	"name": "Ancestry",
-	"version": "0.2",
+	"id": "obsidian-genmap",
+	"name": "Genmap",
+	"version": "0.0.2",
 	"minAppVersion": "0.15.0",
-	"description": "Obsidian plugin for family tree management",
-	"author": "semmelsamu",
-	"authorUrl": "https://www.samuelkroiss.de/",
-	"fundingUrl": "https://www.samuelkroiss.de/",
+	"description": "Smart indexing and rendering of family trees",
+	"author": "Samuel Kroiß",
+	"authorUrl": "https://github.com/semmelsamu/obsidian-genmap",
 	"isDesktopOnly": false
 }

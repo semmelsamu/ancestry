@@ -1,31 +1,34 @@
-# Ancestry
+# Genmap
 
-Obsidian plugin for family tree management
+Smart indexing and rendering of family trees
 
 ## How it works
 
-- Ancestry automatically detects Parents and saves them automatically
-- If you write a `ancestry` code tag, it will automatically look for any relatives and display them in your file.
-- Currently supported are: Children, Siblings and Step Siblings
+-   Genmap automatically detects Parents and saves them automatically
+-   If you write a `ancestry` code tag, it will automatically look for any relatives and display them in your file.
+-   Currently supported are: Children, Siblings and Step Siblings
 
 ## Example
-*Chris.md:*
+
+_Chris.md:_
 
 ```md
 Eltern: [[Anna]]
 ```
 
-*Anna.md:*
-```md
+_Anna.md:_
+
+````md
 Eltern: [[James]]
 
     ```ancestry
     ```
+````
 
-```
+_Will be rendered as:_
 
-*Will be rendered as:*
 ```
 Eltern: [[James]]
 
 Kinder: [[Chris]]
+```
