@@ -13,13 +13,13 @@ Smart indexing and rendering of family trees
 _Chris.md:_
 
 ```md
-Eltern: [[Anna]]
+Parents:: [[Anna]]
 ```
 
 _Anna.md:_
 
 ````md
-Eltern: [[James]]
+Parents:: [[James]]
 
     ```ancestry
     ```
@@ -28,7 +28,7 @@ Eltern: [[James]]
 _Will be rendered as:_
 
 ```
-Eltern: [[James]]
+Parents:: [[James]]
 
-Kinder: [[Chris]]
+Children: [[Chris]]
 ```
