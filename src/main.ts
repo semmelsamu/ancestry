@@ -1,7 +1,7 @@
 import { Plugin, MarkdownView, MarkdownPostProcessorContext } from "obsidian";
 import parse from "@/parse";
 import build from "@/build";
-import { DEFAULT_SETTINGS, Settings, SettingsTab } from "@/sets";
+import { DEFAULT_SETTINGS, Settings, SettingsTab } from "@/settings";
 import renderChildren from "@/renderers/renderChildren";
 import renderParents from "@/renderers/renderParents";
 import renderSiblings from "@/renderers/renderSiblings";
