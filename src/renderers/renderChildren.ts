@@ -2,11 +2,14 @@ import renderWikilink from "@/utilities/renderWikilink";
 import renderWikilinks from "@/utilities/renderWikilinks";
 
 export default function renderChildren(person: Person, el: any) {
-	if (person.children.length < 1) return;
+	const result = el.createEl("p");
 
-	const childrenParagraph = el
-		.createEl("div")
-		.createEl("p", { text: "Kinder: " });
+	result.createEl("strong", { text: "Children: " });
+
+	if (person.children.length < 1) {
+		result.appendChild(document.createTextNode("Unknown"));
+		return;
+	}
 
 	let children: any = [];
 
@@ -23,23 +26,23 @@ export default function renderChildren(person: Person, el: any) {
 	Object.entries(children).forEach(([key, value]: any, index) => {
 		renderWikilinks(
 			value.map((person: any) => person.label),
-			childrenParagraph
+			result
 		);
 
 		if (!key || key == "undefined") {
-			childrenParagraph.appendChild(
-				document.createTextNode(" (unbekanntes anderes Elternteil)")
+			result.appendChild(
+				document.createTextNode(" (unknown other parent)")
 			);
 		} else {
-			childrenParagraph.appendChild(document.createTextNode(" (mit "));
+			result.appendChild(document.createTextNode(" (with "));
 
-			renderWikilink(key, childrenParagraph);
+			renderWikilink(key, result);
 
-			childrenParagraph.appendChild(document.createTextNode(")"));
+			result.appendChild(document.createTextNode(")"));
 		}
 
 		if (index < Object.entries(children).length - 1) {
-			childrenParagraph.appendChild(document.createTextNode("; "));
+			result.appendChild(document.createTextNode("; "));
 		}
 	});
 }

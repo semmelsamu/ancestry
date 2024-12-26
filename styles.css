@@ -6,3 +6,16 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+div.block-language-genmap {
+	padding: 1rem;
+	border-radius: 0.5rem;
+	border: 1px solid var(--divider-color);
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+div.block-language-genmap p {
+	margin: 0;
+}
