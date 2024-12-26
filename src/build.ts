@@ -26,11 +26,13 @@ export default function build(data: any): Person[] {
 	// Link the persons with the data provided
 	result.forEach((thisPerson: Person) => {
 		getRaw(thisPerson.label).parents?.forEach((parentLabel: any) => {
-			thisPerson.parents.push(getReference(parentLabel));
+			const parent = getReference(parentLabel);
+			if (parent) thisPerson.parents.push(parent);
 		});
 
 		getRaw(thisPerson.label).children?.forEach((childLabel: any) => {
-			thisPerson.children.push(getReference(childLabel));
+			const child = getReference(childLabel);
+			if (child) thisPerson.children.push(child);
 		});
 	});
 
