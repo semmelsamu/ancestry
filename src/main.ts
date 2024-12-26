@@ -3,6 +3,7 @@ import parse from "./parse";
 import build from "./build";
 import renderChildren from "./renderers/renderChildren";
 import renderParents from "./renderers/renderParents";
+import renderSiblings from "./renderers/renderSiblings";
 
 export default class Genmap extends Plugin {
 	//**************************************************************************
@@ -112,7 +113,7 @@ export default class Genmap extends Plugin {
 	) {
 		// Convert the source string to an array
 		let sources = source.split(/[\s,]+/).filter((s) => s.trim() != "");
-		if (sources.length == 0) sources = ["parents", "children"];
+		if (sources.length == 0) sources = ["parents", "children", "siblings"];
 
 		// Add Loading Text
 		el.createDiv().createEl("p", { text: "Loading..." });
@@ -133,6 +134,7 @@ export default class Genmap extends Plugin {
 			// Render
 			if (sources.includes("parents")) renderParents(person, el);
 			if (sources.includes("children")) renderChildren(person, el);
+			if (sources.includes("siblings")) renderSiblings(person, el);
 		} catch (error) {
 			// Remove Loading Text
 			el.replaceChildren();
