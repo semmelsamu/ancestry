@@ -1,9 +1,10 @@
 import { Plugin, MarkdownView, MarkdownPostProcessorContext } from "obsidian";
-import parse from "./parse";
-import build from "./build";
-import renderChildren from "./renderers/renderChildren";
-import renderParents from "./renderers/renderParents";
-import renderSiblings from "./renderers/renderSiblings";
+import parse from "@/parse";
+import build from "@/build";
+import { DEFAULT_SETTINGS, Settings, SettingsTab } from "@/settings";
+import renderChildren from "@/renderers/renderChildren";
+import renderParents from "@/renderers/renderParents";
+import renderSiblings from "@/renderers/renderSiblings";
 
 export default class Genmap extends Plugin {
 	//**************************************************************************
@@ -16,6 +17,8 @@ export default class Genmap extends Plugin {
 	 * Our internal map of the family tree.
 	 */
 	private genmap: any = [];
+
+	public settings: Settings;
 
 	//**************************************************************************
 	//
@@ -30,13 +33,12 @@ export default class Genmap extends Plugin {
 		// Hello world
 		console.log(`Loading ${this.manifest.name} v${this.manifest.version}`);
 
+		// Attach the app object globally
+		window.genmap = this;
+
 		// Load settings
-		// await this.loadSettings();
-
-		// Load settings UI
-		// this.addSettingTab(new SettingsTab(this.app, this));
-
-		// this.renderer = new Renderer(this);
+		await this.loadSettings();
+		this.addSettingTab(new SettingsTab(this.app, this));
 
 		// Event listeners for index updating
 		this.registerIndexingEvents();
@@ -89,11 +91,7 @@ export default class Genmap extends Plugin {
 
 	public async indexVault() {
 		this.genmap = build(await parse());
-
-		// Re-render the genmap in the active view with the new data
-		app.workspace
-			.getActiveViewOfType(MarkdownView)
-			?.previewMode.rerender(true);
+		this.reRenderGenmapBlocks();
 	}
 
 	private async getPerson(person: string): Promise<any> {
@@ -143,6 +141,12 @@ export default class Genmap extends Plugin {
 		}
 	}
 
+	reRenderGenmapBlocks() {
+		this.app.workspace
+			.getActiveViewOfType(MarkdownView)
+			?.previewMode.rerender(true);
+	}
+
 	//**************************************************************************
 	//
 	//  Settings
@@ -153,20 +157,20 @@ export default class Genmap extends Plugin {
 	 * Load settings from the disk. Use the default settings if no settings are
 	 * found.
 	 */
-	// async loadSettings() {
-	// 	this.settings = Object.assign(
-	// 		{},
-	// 		DEFAULT_SETTINGS,
-	// 		await this.loadData()
-	// 	);
-	// }
+	async loadSettings() {
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
+	}
 
-	// /**
-	//  * Save settings to the disk
-	//  */
-	// async saveSettings() {
-	// 	await this.saveData(this.settings);
-	// }
+	/**
+	 * Save settings to the disk
+	 */
+	async saveSettings() {
+		await this.saveData(this.settings);
+	}
 
 	//**************************************************************************
 	//

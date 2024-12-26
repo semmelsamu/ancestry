@@ -1,14 +1,15 @@
+import getLocale from "@/utilities/getLocale";
 import renderWikilinks from "@/utilities/renderWikilinks";
 
 export default function renderSiblings(person: Person, el: any) {
 	const result = el.createEl("p");
 
-	result.createEl("strong", { text: "Siblings: " });
+	result.createEl("strong", { text: `${getLocale("siblings")}: ` });
 
 	let siblings: Person[] = getSiblings(person);
 
 	if (siblings.length < 1) {
-		result.appendChild(document.createTextNode("Unknown"));
+		result.appendChild(document.createTextNode(getLocale("unknown")));
 		return;
 	}
 

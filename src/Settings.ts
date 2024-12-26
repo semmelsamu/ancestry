@@ -1,15 +1,16 @@
-import Genmap from "./main";
+import Genmap from "@/main";
+import locale from "@/locale";
 import { App, PluginSettingTab, Setting } from "obsidian";
 
 export interface Settings {
 	/**
-	 * The label from where to pull the parents of a note.
+	 * The language setting for the application.
 	 */
-	parentLabel: string;
+	language: string;
 }
 
 export const DEFAULT_SETTINGS: Partial<Settings> = {
-	parentLabel: "Parent",
+	language: "en",
 };
 
 export class SettingsTab extends PluginSettingTab {
@@ -25,20 +26,21 @@ export class SettingsTab extends PluginSettingTab {
 
 		containerEl.empty();
 
-		containerEl.createEl("h1", { text: "Labels" });
-
-		containerEl.createEl("p", {
-			text: "Customize the labels used for specifying family relations in your family trees.",
-		});
-
-		new Setting(containerEl).setName("Parent Label").addText((text) =>
-			text
-				.setPlaceholder("Parent")
-				.setValue(this.plugin.settings.parentLabel)
-				.onChange(async (value) => {
-					this.plugin.settings.parentLabel = value;
-					await this.plugin.saveSettings();
-				})
-		);
+		new Setting(containerEl)
+			.setName("Language")
+			.setDesc("The language to use for the plugin.")
+			.addDropdown((dropdown) =>
+				dropdown
+					.addOptions({
+						en: "English (English)",
+						de: "German (Deutsch)",
+					})
+					.setValue(this.plugin.settings.language)
+					.onChange(async (value) => {
+						this.plugin.settings.language = value;
+						await this.plugin.saveSettings();
+						this.plugin.reRenderGenmapBlocks();
+					})
+			);
 	}
 }

@@ -1,13 +1,14 @@
+import getLocale from "@/utilities/getLocale";
 import renderWikilink from "@/utilities/renderWikilink";
 import renderWikilinks from "@/utilities/renderWikilinks";
 
 export default function renderChildren(person: Person, el: any) {
 	const result = el.createEl("p");
 
-	result.createEl("strong", { text: "Children: " });
+	result.createEl("strong", { text: `${getLocale("children")}: ` });
 
 	if (person.children.length < 1) {
-		result.appendChild(document.createTextNode("Unknown"));
+		result.appendChild(document.createTextNode(getLocale("unknown")));
 		return;
 	}
 
@@ -31,10 +32,12 @@ export default function renderChildren(person: Person, el: any) {
 
 		if (!key || key == "undefined") {
 			result.appendChild(
-				document.createTextNode(" (unknown other parent)")
+				document.createTextNode(` (${getLocale("unknownOtherParent")})`)
 			);
 		} else {
-			result.appendChild(document.createTextNode(" (with "));
+			result.appendChild(
+				document.createTextNode(` (${getLocale("with")} `)
+			);
 
 			renderWikilink(key, result);
 
