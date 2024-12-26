@@ -1,3 +1,4 @@
+import { Person } from "@/types/person";
 import getLocale from "@/utilities/getLocale";
 import renderWikilinks from "@/utilities/renderWikilinks";
 

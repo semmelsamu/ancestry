@@ -1,5 +1,4 @@
 import Genmap from "@/main";
-import locale from "@/locale";
 import { App, PluginSettingTab, Setting } from "obsidian";
 
 export interface Settings {

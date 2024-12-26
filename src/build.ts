@@ -1,3 +1,5 @@
+import { Person } from "./types/person";
+
 /**
  * Takes the parsed data and builds the genmap.
  */

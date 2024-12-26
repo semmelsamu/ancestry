@@ -1,4 +1,4 @@
-type Person = {
+export type Person = {
 	/**
 	 * The name of the person.
 	 */
