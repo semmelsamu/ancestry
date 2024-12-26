@@ -12,19 +12,19 @@ Smart indexing and rendering of family trees
 
 Add relational information to a person in the YAML frontmatter. Use a list of wikilinks (need to be escaped with double quotes):
 
-```js
-# Son.md
+```
+// Son.md
 
 ---
 parents:
-    - "[[Anna]]"
+    - "[[Mother]]"
 ---
 ```
 
 Render relational information with a `genmap` code tag:
 
-````js
-# Mother.md
+````
+// Mother.md
 
 ```genmap
 parents, children
