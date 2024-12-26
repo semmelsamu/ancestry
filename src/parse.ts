@@ -22,6 +22,6 @@ export default async function parse() {
 
 // Util
 function parseItem(item: any): string[] {
-	if (!item) return [];
+	if (!item || !Array.isArray(item)) return [];
 	return item.map((parent: string) => extractWikilink(parent));
 }
