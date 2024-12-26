@@ -4,31 +4,36 @@ Smart indexing and rendering of family trees
 
 ## How it works
 
--   Genmap automatically detects Parents and saves them automatically
--   If you write a `ancestry` code tag, it will automatically look for any relatives and display them in your file.
--   Currently supported are: Children, Siblings and Step Siblings
+-   Genmap automatically detects parents and children written in the YAML frontmatter.
+-   If you add a `genmap` code tag to a person, genmap will automatically render
+    his or hers nearest relatives.
 
 ## Example
 
-_Chris.md:_
+Add relational information to a person in the YAML frontmatter. Use a list of wikilinks (need to be escaped with double quotes):
 
-```md
-Parents:: [[Anna]]
+```js
+# Son.md
+
+---
+parents:
+    - "[[Anna]]"
+---
 ```
 
-_Anna.md:_
+Render relational information with a `genmap` code tag:
 
-````md
-Parents:: [[James]]
+````js
+# Mother.md
 
-    ```ancestry
-    ```
+```genmap
+parents, children
+```
 ````
 
-_Will be rendered as:_
+Genmap will replace this with Links to the relatives you specified inside the code tag. Currently supported: `parents`, `children`, `siblings`. If nothing is provided, it will render all.
 
-```
-Parents:: [[James]]
+Rendered output of Genmap:
 
-Children: [[Chris]]
-```
+**Parents:** Unknown  
+**Children:** [Son](#)
