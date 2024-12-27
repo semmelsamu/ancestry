@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-genmap",
 	"name": "Genmap",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"minAppVersion": "0.15.0",
 	"description": "Smart indexing and rendering of family trees",
 	"author": "Samuel Kroiß",
