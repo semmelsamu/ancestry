@@ -49,6 +49,7 @@ export default function build(data: any): Person[] {
 	// Automatically calculate the remaining references
 	result.forEach((thisPerson: Person) => {
 		// Also attach us to the list of our parent's children
+		// "If i have a parent, then i am also his child"
 		thisPerson.parents.forEach((parent: Person) => {
 			if (!parent.children.includes(thisPerson)) {
 				parent.children.push(thisPerson);
@@ -56,6 +57,7 @@ export default function build(data: any): Person[] {
 		});
 
 		// Also attach us to the list of our children's parents
+		// "If i have a child, then i am also his parent"
 		thisPerson.children.forEach((child: Person) => {
 			if (!child.parents.includes(thisPerson)) {
 				child.parents.push(thisPerson);
@@ -63,6 +65,7 @@ export default function build(data: any): Person[] {
 		});
 
 		// Also attach us to the list of our sibling's siblings
+		// "If i have a brother, then i am also his sibling"
 		thisPerson.siblings.forEach((sibling: Person) => {
 			if (!sibling.siblings.includes(thisPerson)) {
 				sibling.siblings.push(thisPerson);
@@ -71,6 +74,7 @@ export default function build(data: any): Person[] {
 
 		// For each sibling we have, also add our siblings to
 		// the list of its siblings
+		// "If i have a brother and he has a sister, i should also have her as a sibling"
 		thisPerson.siblings.forEach((sibling: Person) => {
 			thisPerson.siblings.forEach((siblingToAdd: Person) => {
 				if (siblingToAdd == sibling) return;
