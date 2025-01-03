@@ -68,6 +68,17 @@ export default function build(data: any): Person[] {
 				sibling.siblings.push(thisPerson);
 			}
 		});
+
+		// For each sibling we have, also add our siblings to
+		// the list of its siblings
+		thisPerson.siblings.forEach((sibling: Person) => {
+			thisPerson.siblings.forEach((siblingToAdd: Person) => {
+				if (siblingToAdd == sibling) return;
+				if (!sibling.siblings.includes(siblingToAdd)) {
+					sibling.siblings.push(siblingToAdd);
+				}
+			});
+		});
 	});
 
 	console.log(result);
