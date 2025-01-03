@@ -31,9 +31,10 @@ parents, children
 ```
 ````
 
-Genmap will replace this with Links to the relatives you specified inside the code tag. Currently supported: `parents`, `children`, `siblings`. If nothing is provided, it will render all.
+If nothing further is specified, Genmap will replace the code tag with links to all relatives it finds.
+You may specify which relatives to render by adding a comma-separated list of the following options: `parents`, `children`, `siblings`.
 
-Rendered output of Genmap:
+The example above will be rendered as follows:
 
 **Parents:** Unknown  
 **Children:** [Son](#)
