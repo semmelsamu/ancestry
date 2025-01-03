@@ -1,7 +1,6 @@
 import { Person } from "@/types/person";
 import getLocale from "@/utilities/getLocale";
-import renderWikilink from "@/utilities/renderWikilink";
-import renderWikilinks from "@/utilities/renderWikilinks";
+import renderPersons from "@/utilities/renderPersons";
 
 export default function renderParents(person: Person, el: any) {
 	const result = el.createEl("p");
@@ -13,8 +12,5 @@ export default function renderParents(person: Person, el: any) {
 		return;
 	}
 
-	renderWikilinks(
-		person.parents.map((p: any) => p.label),
-		result
-	);
+	renderPersons(person.parents, result);
 }
