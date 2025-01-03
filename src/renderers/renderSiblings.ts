@@ -7,7 +7,14 @@ export default function renderSiblings(
 	el: any,
 	hideEmptyRelations: boolean
 ): number {
-	if (person.siblings.length < 1) {
+	// Siblings may be calculated straight up from the calculation over the
+	// parents or already be hardcoded in the person.
+	let siblings = [...calculateSiblings(person), ...person.siblings];
+
+	// Make sure every sibling is unique
+	siblings = Array.from(new Set(siblings));
+
+	if (siblings.length < 1) {
 		if (!hideEmptyRelations)
 			el.createEl("em", {
 				text: `${getLocale("siblings")}: ${getLocale("unknown")}`,
@@ -19,13 +26,6 @@ export default function renderSiblings(
 	const result = el.createEl("p");
 
 	result.createEl("strong", { text: `${getLocale("siblings")}: ` });
-
-	// Siblings may be calculated straight up from the calculation over the
-	// parents or already be hardcoded in the person.
-	let siblings = [...calculateSiblings(person), ...person.siblings];
-
-	// Make sure every sibling is unique
-	siblings = Array.from(new Set(siblings));
 
 	renderPersons(siblings, result);
 
