@@ -94,8 +94,8 @@ export default class Genmap extends Plugin {
 		this.reRenderGenmapBlocks();
 	}
 
-	private async getPerson(person: string): Promise<any> {
-		return this.genmap.find((p: any) => p.label == person);
+	private async getPerson(path: string): Promise<any> {
+		return this.genmap.find((p: any) => p.path == path);
 	}
 
 	//**************************************************************************
@@ -117,14 +117,8 @@ export default class Genmap extends Plugin {
 		el.createDiv().createEl("p", { text: "Loading..." });
 
 		try {
-			// Extract Person Name
-			const label = ctx.sourcePath.substring(
-				0,
-				ctx.sourcePath.length - 3
-			);
-
 			// Fetch Data
-			const person = await this.getPerson(label);
+			const person = await this.getPerson(ctx.sourcePath);
 
 			// Remove Loading Text
 			el.replaceChildren();

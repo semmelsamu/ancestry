@@ -5,6 +5,11 @@ export type Person = {
 	label: string;
 
 	/**
+	 * The path to the markdown file.
+	 */
+	path: string;
+
+	/**
 	 * The parents of the person.
 	 */
 	parents: Person[];

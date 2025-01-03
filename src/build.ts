@@ -18,6 +18,7 @@ export default function build(data: any): Person[] {
 	data.forEach((person: any) => {
 		result.push({
 			label: person.label,
+			path: person.path,
 			parents: [],
 			children: [],
 		});

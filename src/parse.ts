@@ -13,6 +13,7 @@ export default async function parse() {
 
 			return {
 				label: file.basename,
+				path: file.path,
 				parents: parseItem(frontmatter?.parents),
 				children: parseItem(frontmatter?.children),
 			};
