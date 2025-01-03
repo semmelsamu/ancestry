@@ -27,7 +27,9 @@ export class SettingsTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Language")
-			.setDesc("The language to use for the plugin.")
+			.setDesc(
+				"The language to use for the plugin. May need to reload the plugin to take effect."
+			)
 			.addDropdown((dropdown) =>
 				dropdown
 					.addOptions({
