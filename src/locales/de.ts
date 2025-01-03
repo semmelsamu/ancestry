@@ -5,4 +5,5 @@ export default {
 	siblings: "Geschwister",
 	unknown: "Unbekannt",
 	unknownOtherParent: "Unbekanntes anderes Elternteil",
+	noRelations: "Keine Beziehungen gefunden",
 };

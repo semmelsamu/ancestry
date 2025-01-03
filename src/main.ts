@@ -143,6 +143,12 @@ export default class Genmap extends Plugin {
 				renderedItems += renderChildren(person, el, hideEmptyRelations);
 			if (sources.includes("siblings"))
 				renderedItems += renderSiblings(person, el, hideEmptyRelations);
+
+			if (renderedItems == 0 && hideEmptyRelations) {
+				el.createEl("em", {
+					text: `${getLocale("noRelations")}`,
+				});
+			}
 		} catch (error) {
 			// Remove Loading Text
 			el.replaceChildren();
