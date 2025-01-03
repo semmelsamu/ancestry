@@ -16,6 +16,7 @@ export default async function parse() {
 				path: file.path,
 				parents: parseItem(frontmatter?.parents),
 				children: parseItem(frontmatter?.children),
+				siblings: parseItem(frontmatter?.siblings),
 			};
 		})
 	);

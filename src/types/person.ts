@@ -18,4 +18,9 @@ export type Person = {
 	 * The children of the person.
 	 */
 	children: Person[];
+
+	/**
+	 * The siblings of the person.
+	 */
+	siblings: Person[];
 };
