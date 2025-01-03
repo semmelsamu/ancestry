@@ -3,15 +3,23 @@ import getLocale from "@/utilities/getLocale";
 import renderWikilink from "@/utilities/renderWikilink";
 import renderPersons from "@/utilities/renderPersons";
 
-export default function renderChildren(person: Person, el: any) {
+export default function renderChildren(
+	person: Person,
+	el: any,
+	hideEmptyRelations: boolean
+): number {
+	if (person.children.length < 1) {
+		if (!hideEmptyRelations)
+			el.createEl("em", {
+				text: `${getLocale("children")}: ${getLocale("unknown")}`,
+			});
+
+		return 0;
+	}
+
 	const result = el.createEl("p");
 
 	result.createEl("strong", { text: `${getLocale("children")}: ` });
-
-	if (person.children.length < 1) {
-		result.appendChild(document.createTextNode(getLocale("unknown")));
-		return;
-	}
 
 	let children: any = [];
 
@@ -29,9 +37,12 @@ export default function renderChildren(person: Person, el: any) {
 		renderPersons(value, result);
 
 		if (!key || key == "undefined") {
-			result.appendChild(
-				document.createTextNode(` (${getLocale("unknownOtherParent")})`)
-			);
+			if (!hideEmptyRelations)
+				result.appendChild(
+					document.createTextNode(
+						` (${getLocale("unknownOtherParent")})`
+					)
+				);
 		} else {
 			result.appendChild(
 				document.createTextNode(` (${getLocale("with")} `)
@@ -46,4 +57,6 @@ export default function renderChildren(person: Person, el: any) {
 			result.appendChild(document.createTextNode("; "));
 		}
 	});
+
+	return 1;
 }

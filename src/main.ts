@@ -5,6 +5,7 @@ import { DEFAULT_SETTINGS, Settings, SettingsTab } from "@/settings";
 import renderChildren from "@/renderers/renderChildren";
 import renderParents from "@/renderers/renderParents";
 import renderSiblings from "@/renderers/renderSiblings";
+import getLocale from "./utilities/getLocale";
 
 export default class Genmap extends Plugin {
 	//**************************************************************************
@@ -110,8 +111,18 @@ export default class Genmap extends Plugin {
 		ctx: MarkdownPostProcessorContext
 	) {
 		// Convert the source string to an array
+		// The user may specify which relationships to render here
 		let sources = source.split(/[\s,]+/).filter((s) => s.trim() != "");
-		if (sources.length == 0) sources = ["parents", "children", "siblings"];
+
+		let hideEmptyRelations = true;
+
+		// If the user doesn't specify any relationships, we render all of them
+		// This is done by setting fullResult to true
+		if (sources.length == 0) {
+			sources = ["parents", "children", "siblings"];
+		} else {
+			hideEmptyRelations = false;
+		}
 
 		// Add Loading Text
 		el.createDiv().createEl("p", { text: "Loading..." });
@@ -123,10 +134,15 @@ export default class Genmap extends Plugin {
 			// Remove Loading Text
 			el.replaceChildren();
 
+			let renderedItems = 0;
+
 			// Render
-			if (sources.includes("parents")) renderParents(person, el);
-			if (sources.includes("children")) renderChildren(person, el);
-			if (sources.includes("siblings")) renderSiblings(person, el);
+			if (sources.includes("parents"))
+				renderedItems += renderParents(person, el, hideEmptyRelations);
+			if (sources.includes("children"))
+				renderedItems += renderChildren(person, el, hideEmptyRelations);
+			if (sources.includes("siblings"))
+				renderedItems += renderSiblings(person, el, hideEmptyRelations);
 		} catch (error) {
 			// Remove Loading Text
 			el.replaceChildren();
